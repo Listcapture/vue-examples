@@ -41,10 +41,10 @@ npm run build
 
 ### Lint with [ESLint](https://eslint.org/)
 
-
-
-#### npm install 克隆后获取对应依赖
-
 ```sh
 npm run lint
 ```
+
+#### npm install 克隆后获取对应依赖
+
+
