@@ -44,3 +44,7 @@ npm run build
 ```sh
 npm run lint
 ```
+
+#### npm install 克隆后获取对应依赖
+
+
