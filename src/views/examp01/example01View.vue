@@ -1,11 +1,16 @@
 
 <script setup lang="ts">
-let user = { name: 'litian' };
+let user = { name: 'Tian',date:"2024-3-19" };
 </script>
 
 <template>
   <div>
-    <h1><RouterLink to="/example01">example01</RouterLink></h1>
-    {{ user.name }}
+     
+    <div><span style="font-weight: bold;">{{ user.name+' '+user.date }}</span>
+      <br>
+    <span>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Nihil fugit magnam commodi dolor voluptas molestias illum nobis laborum, iusto repellendus optio rem autem consectetur obcaecati, facilis distinctio perferendis vel ullam.
+    </span>
+    </div>
+
   </div>
 </template>

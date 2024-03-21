@@ -22,6 +22,12 @@ const currentIndexR=ref(0)
 const currentComponentC=computed(()=>components[currentIndexR.value]?.component);
 //激活状态组件的文字颜色
 const activeStyleC=computed(()=>(index:number)=>index==currentIndexR.value?{color:'red',dec:'underline'}:{color:'black',dec:'none'})
+let imglist=[
+  'sfs',
+  'sfd',
+  'sfs',
+  'sfd',
+]
 </script>
 <template>
 <div>
@@ -33,6 +39,11 @@ const activeStyleC=computed(()=>(index:number)=>index==currentIndexR.value?{colo
     }">{{ c.name }}</span>
      <div>
       <component :is="currentComponentC"/>
+     </div>
+     <div id="imglist">
+        <button>Last</button>
+        <span v:></span>
+        <button>Next</button>
      </div>
 
 
