@@ -1,50 +1,44 @@
-# vue-examples
+`教师排课系统`
 
-This template should help get you started developing with Vue 3 in Vite.
+1.实现一个登录页面，用于登录，登陆后跳转到过管理页面
 
-## Recommended IDE Setup
+2.管理页面，分为主页面，主要包括两大模块
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+Header: 可以选择退出登录，跳转到登录页面
 
-## Type Support for `.vue` Imports in TS
+作为教师，可以添加自己教的课程，然后将这些课程添加到CourseList
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+数据类型定义如下，存放在projectEntity.ts
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+```ts
+// Teacher 类
+interface T {
+  teacherId: number;
+  teacherName: string;
+  TeacherTitle: string;
+}
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+// 课程类 Class
+interface Course {
+  courseId: number;
+  courseName: string;
+  teacher: T;
+}
 
-## Customize configuration
-
-See [Vite Configuration Reference](https://vitejs.dev/config/).
-
-## Project Setup
-
-```sh
-npm install
+// 已经分配了的课程类
+interface AsignedCourse extends Course {
+  StartWeek: number;
+  EndWeek: number;
+  TeachingDay: number[]; // 数字集合，范围是 1 到 7
+  StartTime: number; // 第几节课1-12
+  EndTime: number; // 第几节课1-12
+  
+}
 ```
 
-### Compile and Hot-Reload for Development
+作为教师，可以灵活安排课程开始-结束时间，需要一个维护一个课表Table，根据asignedCourseList动态渲染课表即可：
 
-```sh
-npm run dev
-```
-
-### Type-Check, Compile and Minify for Production
-
-```sh
-npm run build
-```
-
-### Lint with [ESLint](https://eslint.org/)
-
-```sh
-npm run lint
-```
-
-#### npm install 克隆后获取对应依赖
-
-
+| 周一 | 周二 | 周三 | 周四 | 周五 | 周六 | 周日 |
+| ---- | ---- | ---- | ---- | ---- | ---- | ---- |
+|      |      |      |      |      |      |      |
+|      |      |      |      |      |      |      |
