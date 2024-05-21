@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import { ref } from 'vue';
 let count=ref(0);
@@ -30,8 +29,6 @@ let list:Curriculum[]=[
     {index:7,name:'Web系统框架',cent:2.5,sem:6},
     {index:8,name:'大数据开发基础',cent:2.5,sem:6},
     {index:9,name:'Python应用',cent:2.5,sem:6},
-
-
 ];
 //定义选中课程动态数组
 let selected=ref<Curriculum[]>([]);
@@ -53,14 +50,14 @@ function Process(index: number, e: Event) {
         }
     }
     SubCount(list[index].cent);
-    console.log('failed');
+    //console.log('failed');
   }
   //排序
   selected.value.sort((a,b)=>{return a.sem - b.sem;});
   console.log(selected.value.length);
 }
 </script>
-
+//定义样式表
 <style scoped>
 .container {
   display: flex;
@@ -80,8 +77,6 @@ function Process(index: number, e: Event) {
 
 <template>
 <div class="container">
-
-    
     <div class="Table">
         <h1 :style="{color:count>12?'green':'red'}">{{ count }}/{{ Total }}</h1>
         <div v-for="(cur) in list" :key="cur.index" >
@@ -100,6 +95,7 @@ function Process(index: number, e: Event) {
         <div v-for="cur in selected" :key="cur.index">
             {{ cur.name }}-{{ cur.cent }}({{ cur.sem }})
         </div>
+
     </div>
     
 </div>

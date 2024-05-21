@@ -3,14 +3,26 @@ import { fileURLToPath, URL } from 'node:url'
 import { defineConfig } from 'vite'
 import vue from '@vitejs/plugin-vue'
 
-// https://vitejs.dev/config/
+
 export default defineConfig({
   plugins: [
     vue(),
-  ],
-  resolve: {
-    alias: {
-      '@': fileURLToPath(new URL('./src', import.meta.url))
-    }
-  }
+  ], 
+  base:'./',
+ 
 })
+
+// import { fileURLToPath, URL } from 'node:url';
+
+// import { defineConfig } from 'vite';
+// import vue from '@vitejs/plugin-vue';
+
+// // 获取当前文件所在路径
+// const __dirname = fileURLToPath(new URL('.', import.meta.url));
+
+// export default defineConfig({
+//   plugins: [vue()],
+//   base: './'  // 相对路径打包
+   
+//   },
+// });

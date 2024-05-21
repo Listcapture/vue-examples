@@ -1,51 +1,34 @@
 <script setup lang="ts">
-import { ref } from 'vue';
-import { RouterLink, RouterView } from 'vue-router';
-import SideBarView from './SideBarView.vue';
-import HomeWork1 from './HomeWorks/Homework1/HomeWork1.vue';
-import type example02View from './examp01/example02View.vue';
-import SelectView from './SelectCurriculm.vue'
+import { createRouter, createWebHistory, RouteRecordRaw, useRouter } from 'vue-router';
+import LoginView from './Project/LoginView.vue';
+import MainPage from './Project/MainPage.vue';
 
-let msg = "hello Tian!";
-let msg2="404 NotFound!";
-let  count = ref(100); 
-let x=0;
-function addCount(num:number)
-{
-  count.value+=num;
-}
-function SubCount(num:number)
-{
-  count.value-=x;
-}
-// 使用 ref 创建响应式数据count
+const router = useRouter();
+router.push('/index');
+// // 路由配置
+// const routes: Array<RouteRecordRaw> = [
+//   {
+//     path: '/index',
+//     component: LoginView
+//   },
+//   {
+//     path: '/mainpage',
+//     component: MainPage
+//   }
+//   // 添加其他路由
+// ];
+
+// // 创建路由实例
+// const myRouter = createRouter({
+//   history: createWebHistory(import.meta.env.BASE_URL),
+//   routes: routes
+// });
+
+// 自动跳转到 /index
+
 </script>
-<template >
-  <!-- <SideBarView id="sidebar" /> -->
-  <!-- <RouterView id="router" /> -->
-  <SelectView/>
-  <div id="app" >  
-  </div>
 
-</template>
-
-<style>
-/* #app {
-  display: flex;
-  height: 1080px;
-}
-
-#sidebar {
-  width: 300px;
-  border: 1px solid black;
-}
-
-#router {
-  border: 1px solid black;
-  flex: 1;
+<template>
   
-} */
-</style>
-<script>
-   
-</script>
+  <router-view style="border-radius:5%;"></router-view>
+</template>

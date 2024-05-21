@@ -18,6 +18,10 @@ interface Curriculum{
     cent:number;
     sem:number;
 }
+let  clickToStart =function( )
+{
+   console.log("111" );
+};
 //定义静态课程数组
 let list:Curriculum[]=[
     {index:0,name:'Web前端开发技术',cent:2,sem:4},
@@ -36,7 +40,8 @@ let list:Curriculum[]=[
 //定义选中课程动态数组
 let selected=ref<Curriculum[]>([]);
 function Process(index: number, e: Event) {
-  
+let curRef=ref<Curriculum>(list[0]);
+console.log(curRef.value.name);
   const target = e.target as HTMLInputElement;
   //添加选中课程
   if (target.checked) {
@@ -47,6 +52,8 @@ function Process(index: number, e: Event) {
     //删除选中课程
     for(let i=0;i<selected.value.length;i++)
     {
+       
+
         if(selected.value[i].index==index)
         {
             selected.value.splice(i,1);
@@ -95,10 +102,14 @@ function Process(index: number, e: Event) {
 
     <div class="show">
         <h1>
-            show
+            show 
+          
         </h1>
         <div v-for="cur in selected" :key="cur.index">
             {{ cur.name }}-{{ cur.cent }}({{ cur.sem }})
+        </div>
+        <div v-if="true" @click="clickToStart" :color="'red'" >
+            hello world
         </div>
     </div>
     

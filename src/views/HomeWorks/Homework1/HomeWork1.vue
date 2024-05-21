@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { defineAsyncComponent, type Component,ref,computed} from 'vue';
-
-
 const components:{name:string;component:Component}[]=[
   {
     name:'添加用户',
