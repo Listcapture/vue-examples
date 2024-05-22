@@ -27,16 +27,16 @@ const navigate = (destination) => {
       <img src="./resources/img/logo.png" alt="东北林业大学logo" class="logo">
       <div class="user-info">
         <span></span>
-        <button @click="logout">退出</button>
+        <button @click="logout" class="log">退出</button>
       </div>
     </header>
 
     <div class="main-container">
       <nav>
         <ul>
-          <li @click="navigate('/personal')">个人信息</li>
-          <li @click="navigate('/courses')">我教的课程</li>
-          <li @click="navigate('/bookRoom')">机房预约</li>
+          <li style="text-align: center;" @click="navigate('/personal')">个人信息</li>
+          <li style="text-align: center;" @click="navigate('/courses')">我教的课程</li>
+          <li style="text-align: center;" @click="navigate('/bookRoom')">机房预约</li>
         </ul>
       </nav>
 

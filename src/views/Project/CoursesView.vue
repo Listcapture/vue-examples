@@ -9,11 +9,10 @@
         <h3>Add Course</h3>
         <form @submit.prevent="addCourse">
           <label for="courseName">Course Name:</label>
-          <input type="text" id="courseName" v-model="newCourse.courseName" placeholder="Enter course name">
-          <label for="teacherName">Teacher Name:</label>
-          <input type="text" id="teacherName" v-model="newCourse.teacherName" placeholder="Enter teacher name">
+          <input type="text" id="courseName" v-model="newCourse.courseName" placeholder="输入课程名">
+
           <label for="teacherName">Class Time:</label>
-          <input type="text" id="teacherName" v-model="newCourse.totalTime" placeholder="Enter teacher name">
+          <input type="text" id="teacherName" v-model="newCourse.totalTime" placeholder="输入课时">
           <button type="submit">Add Course</button>
         </form>
       </div>
@@ -24,7 +23,7 @@
           <tr>
             <th>课程Id</th>
             <th>课程名</th>
-            <th>任课教师</th>
+            <th>课时</th>
             <th>操作</th> <!-- Added column for modify and delete option -->
           </tr>
         </thead>
@@ -32,12 +31,12 @@
         <!-- Table Body -->
         <tbody style="align-items: center;justify-self: center;">
           <tr v-for="(c,index) of  courselist.getAllCourses()" :key='index'>
-            <td> {{ c.courseId }}  </td>
-            <td> {{ c.courseName }}  </td>
-            <td> {{ c.teacher.teacherName }}  </td>
+            <td style="text-align: center;"> {{ index+1}}  </td>
+            <td style="text-align: center;"> {{ c.courseName }}  </td>
+            <td style="text-align: center;"> {{ c.totalTime }}  </td>
             <td>
               <!-- Modify Button -->
-              <button @click="editCourse(index)">Modify</button>
+              <button style="text-align: center;"  @click="editCourse(index)">Modify</button>
               <!-- Delete Button -->
             </td>
             <td>
@@ -52,11 +51,11 @@
   
   <script setup lang="ts">
   import { reactive, ref } from 'vue';
-  import { Course, CourseLIST, CourseList, Teacher, Wanbo } from './projectEntity';
+  import { Course, CourseLIST, Teacher, Wanbo } from './projectEntity';
   
-  let courselist = CourseLIST;
+  let courselist = reactive(CourseLIST);
   let userproxy = reactive(Wanbo);
-  const newCourse = reactive({ courseId: '', courseName: '', teacherName: '',totalTime:0 });
+  const newCourse = reactive({ courseId: '', courseName: '', teacherName: '',totalTime:0,curTimeSum:0 });
   const editMode = ref(false);
   
   // Add Course Method
@@ -65,7 +64,7 @@
     // Add new course to the course list
     // courselist.push({ ...newCourse });
     // Clear input fields
-    let tCourse=new Course(courselist.getAllCourses().length,newCourse.courseName,Wanbo,newCourse.totalTime);
+    let tCourse=new Course(courselist.getAllCourses().length+1,newCourse.courseName,Wanbo,newCourse.totalTime,0);
     courselist.addCourse(tCourse);
     newCourse.courseId = '';
     newCourse.courseName = '';
@@ -78,6 +77,7 @@
     // Set edit mode to true to display edit form
     editMode.value = true;
     courselist.updateCourseInfo(index,newCourse.courseName);
+    CourseLIST.updateCourseInfo(index,newCourse.courseName);
     // Pre-fill input fields with current course information
     // newCourse.courseId = courselist[index].courseId;
     newCourse.courseName = '';
@@ -87,7 +87,7 @@
   // Delete Course Method
   const deleteCourse = (index) => {
     // Remove course from the course list based on index
-    courselist.getAllCourses().splice(index, 1);
+    courselist.getAllCourses().splice(index,1);
   };
   </script>
   
@@ -120,4 +120,26 @@
   .add-course-form button:hover {
     background-color: #0056b3;
   }
+  .custom-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.custom-table th, .custom-table td {
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ddd;
+}
+
+.custom-table th {
+  background-color: #f2f2f2;
+}
+
+.custom-table tbody tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.custom-table tbody tr:hover {
+  background-color: #ddd;
+}
   </style>

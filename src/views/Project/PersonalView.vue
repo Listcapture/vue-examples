@@ -13,10 +13,10 @@
       </thead>
       <tbody style="align-items: center;justify-self: center;">
         <tr>
-          <td>1</td>
-          <td>{{ userproxy.teacherName }}</td>
-          <td>{{ userproxy.TeacherTitle }}</td>
-          <td><button @click="editMode = true">修改</button></td>
+          <td style="text-align: center;">1</td>
+          <td style="text-align: center;">{{ userproxy.teacherName }}</td>
+          <td style="text-align: center;">{{ userproxy.TeacherTitle }}</td>
+          <td style="align-items: center;justify-content: center;align-self: center;"><button style="text-align: center;" @click="editMode = true">修改</button></td>
         </tr>
       </tbody>
     </table>

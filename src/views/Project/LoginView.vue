@@ -6,7 +6,7 @@
         <input v-model="UserName" type="text" placeholder="账号" name="account">
         <input v-model="password" type="password" placeholder="密码" name="password">
         <br>
-        <button type="submit" @click="login">
+        <button type="submit" @click="login" class="log">
             登录
         </button>
       </form>
@@ -31,6 +31,7 @@
     router.push('./mainpage')
   } else {
     console.error('登录失败');
+    alert(errorMessage.value);
   }
 }
   </script>
@@ -89,7 +90,7 @@
       font: 900 16px '';
       border-radius: 3px;
    }
-   button{
+    .log{
       text-align: center;
       display: block;
       height: 51px;

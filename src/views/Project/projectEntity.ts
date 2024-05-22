@@ -1,3 +1,6 @@
+import { time } from "console";
+import exp from "constants";
+
 // Teacher 类
 export class Teacher {
     teacherId: number;
@@ -18,24 +21,64 @@ export class Teacher {
         this.TeacherTitle = teacherTitle;
     }
 }
-
+export class Lab {
+    labId:number;
+    labName:string;
+    asignedCourseList:AsignedCourseList;
+    constructor(labId:number,labName:string,asignedCourseList:AsignedCourseList)
+    {
+     this.labId=labId;
+     this.labName=labName;
+     this.asignedCourseList=asignedCourseList;
+    }
+ 
+    getAsignedCourseList():AsignedCourseList{
+     return this.asignedCourseList;
+    }
+ }
+ export class LabList{
+     labs:Lab[];
+     constructor(labs:Lab[])
+     {
+         this.labs=labs
+     }
+     getLabList():Lab[]{
+         return this.labs;
+     }
+     addLab(labId:number,labName:string)
+     {
+         this.labs.push(new Lab(labId,labName,new AsignedCourseList([])));
+         for(let i=0;i<this.labs.length;i++)
+             {
+                 this.labs[i].labId=i;
+             }
+     }
+     remove(labId:number)
+     {
+         this.labs.splice(labId,1);
+     }
+ }
 // 课程类 Class
 export class Course {
     courseId: number;
     courseName: string;
     teacher: Teacher;
     totalTime:number;
-
-    constructor(courseId: number, courseName: string, teacher: Teacher,totalTime:number ) {
+    curTimeSum:number;
+    constructor(courseId: number, courseName: string, teacher: Teacher,totalTime:number,curTimeSum:number) {
         this.courseId = courseId;
         this.courseName = courseName;
         this.teacher = teacher;
         this.totalTime=totalTime;
+        this.curTimeSum=curTimeSum;
     }
 
     // 修改课程信息
     updateCourseInfo(courseName: string): void {
         this.courseName = courseName;
+    }
+    updateCourseTime(curTimeSum:number):void {
+        this.curTimeSum=curTimeSum;
     }
 }
 
@@ -46,18 +89,20 @@ export class AsignedCourse extends Course {
     EndWeek: number;
     StartTime: number; // 第几节课1-12
     EndTime: number; // 第几节课1-12
-    TeachingDay: number[]; // 数字集合，范围是 1 到 7
-    constructor( c:Course,StartWeek: number, EndWeek: number, TeachingDay: number[],startTime:number,endTime:number) {
-        super(c.courseId,c.courseName,c.teacher,c.totalTime);
+    timeSum:number;
+    TeachingDay: number; // 数字，范围是 1 到 7
+    constructor( c:Course,StartWeek: number, EndWeek: number, TeachingDay: number,startTime:number,endTime:number) {
+        super(c.courseId,c.courseName,c.teacher,c.totalTime,c.curTimeSum);
         this.StartWeek = StartWeek;
         this.EndWeek = EndWeek;
         this.TeachingDay = TeachingDay;
         this.StartTime=startTime;
         this.EndTime=endTime;
+        this.timeSum=(this.EndTime-this.StartTime)*(this.EndWeek-this.StartWeek);
     }
 
     // 修改已安排课程信息
-    updateAsignedCourseInfo(newCourseName: string, StartWeek: number, EndWeek: number, TeachingDay: number[], StartTime: number, EndTime: number): void {
+    updateAsignedCourseInfo(StartWeek: number, EndWeek: number, TeachingDay: number, StartTime: number, EndTime: number): void {
         this.StartWeek = StartWeek;
         this.EndWeek = EndWeek;
         this.TeachingDay = TeachingDay;
@@ -68,19 +113,39 @@ export class AsignedCourse extends Course {
 
 // 示例教师
 export let Wanbo = new Teacher(1, '王波', '讲师');
+const Course1 = new Course(1, 'Web系统框架', Wanbo,16,8);
+const Course2 = new Course(2, 'Java程序设计', Wanbo,12,6);
+const Course3 = new Course(3, 'Web前端开发', Wanbo,24,8);
+const Course4 = new Course(4, '软件体系结构', Wanbo,24,12);
 
 // 示例课程
-const Lab1 = new Course(1, 'Web系统框架', Wanbo,16);
-const Lab2 = new Course(2, 'Java程序设计', Wanbo,12);
-const Lab3 = new Course(3, 'Web前端开发', Wanbo,24);
-const Lab4 = new Course(4, '软件体系结构', Wanbo,16);
+const asignedCourse1 = new AsignedCourse(Course1, 1, 4, 1, 1, 2);
+const asignedCourse2 = new AsignedCourse(Course2, 1, 3, 2, 1, 2);
+const asignedCourse3 = new AsignedCourse(Course3, 1, 4, 3, 1, 2);
+const asignedCourse4 = new AsignedCourse(Course4, 1, 4, 4, 1, 2);
+const StaticCourseList=[Course1,Course2,Course3,Course4]
+const asignedCourseList: AsignedCourse[] = [asignedCourse1, asignedCourse2, asignedCourse3, asignedCourse4];
 
-let  StaticCourseList: Course[] = [Lab1, Lab2, Lab3, Lab4];
-
-export class Lab {
-
-
+export class AsignedCourseList {
+    asignedCourses: AsignedCourse[];
+    constructor(asignedCourse: AsignedCourse[]) {
+        this.asignedCourses = asignedCourse;
+    }
+    getAllAsignedCourse():AsignedCourse[]{
+        return this.asignedCourses;
+    }
 }
+
+const ACLO = new AsignedCourseList(asignedCourseList);
+const Labx1=new Lab(1,'901',ACLO);
+const Labx2=new Lab(2,'902',ACLO);
+export let lablist:LabList=new LabList([Labx1,Labx2]);
+// export let MyLabList:LabList=new LabList(lablist);
+// 类“Lab”用于其声明前。ts(2449)
+// projectEntity.ts(146, 14): 在此处声明了 "Lab"。
+// constructor Lab(labId: number, labName: string, asignedCourseList: AsignedCourseList): Lab
+
+
 // 课程列表类
 export class CourseList {
     courses: Course[];
@@ -95,7 +160,11 @@ export class CourseList {
 
     // 删除课程
     removeCourse(courseId: number): void {
-        this.courses = this.courses.filter(course => course.courseId !== courseId);
+        this.courses.splice(courseId,1);
+        for(let i=0;i<this.courses.length;i++)
+        {
+            this.courses[i].courseId=i;
+        }
     }
 
     // 修改课程信息
@@ -112,40 +181,25 @@ export class CourseList {
     }
 }
 
+
 // 已安排课程列表类
-export class AsignedCourseList {
-    private asignedCourses: AsignedCourse[];
 
-    constructor() {
-        this.asignedCourses = [];
-    }
+// export class AsignedCourseList {
+//      asignedCourses: AsignedCourse[];
+//     constructor(asignedCourse:AsignedCourse[]) {
+//         this.asignedCourses = asignedCourse;
+//     }
+//     // 添加已安排课程
+//     addAsignedCourse(asignedCourse: AsignedCourse): void {
+//         this.asignedCourses.push(asignedCourse);
+//     }
+//     // 获取所有已安排课程
+//     getAllAsignedCourses(): AsignedCourse[] {
+//         return this.asignedCourses;
+//     }
+// }
 
-    // 添加已安排课程
-    addAsignedCourse(asignedCourse: AsignedCourse): void {
-        this.asignedCourses.push(asignedCourse);
-    }
-
-    // 删除已安排课程
-    removeAsignedCourse(courseId: number): void {
-        this.asignedCourses = this.asignedCourses.filter(course => course.courseId !== courseId);
-    }
-
-    // 修改已安排课程信息
-    updateAsignedCourseInfo(courseId: number, newCourseName: string, StartWeek: number, EndWeek: number, TeachingDay: number[], StartTime: number, EndTime: number): void {
-        const asignedCourse = this.asignedCourses.find(course => course.courseId === courseId);
-        if (asignedCourse) {
-            asignedCourse.updateAsignedCourseInfo(newCourseName, StartWeek, EndWeek, TeachingDay, StartTime, EndTime);
-        }
-    }
-
-    // 获取所有已安排课程
-    getAllAsignedCourses(): AsignedCourse[] {
-        return this.asignedCourses;
-    }
-}
 
 // 创建课程列表实例
-export let labList = new CourseList(StaticCourseList);
-export let CourseLIST =new CourseList(StaticCourseList);
 
-// 创建已安排课程列表实例
+export let CourseLIST =new CourseList(StaticCourseList);
