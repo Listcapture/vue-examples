@@ -264,9 +264,3 @@ export let CourseLIST =new CourseList(StaticCourseList);
    }
    ```
 2. 由于AsignedCourse继承自Course，所以可以根据用户选择的信息，构成一个AsignedCourse实体类，让后把它挂载到lab的list中
-
-
-
-## 3.总结
-
-显然没有Java好用，让AsignedCourse extends Course 太蠢了，毕竟没有数据库让两种实体产生依赖...........................后续开发难以进行
