@@ -4,7 +4,7 @@
       <h1>Hello {{ Wanbo.teacherName }}</h1>
       <!-- Add Course Form -->
       <div class="add-course-form">
-        <span style="color:pink;">先输入内容，然后点击add Course 添加课程/点击Modify修改对应课程</span> 
+
         <hr>
         <h3>Add Course</h3>
         <form @submit.prevent="addCourse">
@@ -16,7 +16,7 @@
           <button type="submit">Add Course</button>
         </form>
       </div>
-  
+      <hr>
       <table class="custom-table">
         <!-- Table Headers -->
         <thead>
@@ -24,21 +24,18 @@
             <th>课程Id</th>
             <th>课程名</th>
             <th>课时</th>
+            <th>已分配课时</th>
             <th>操作</th> <!-- Added column for modify and delete option -->
           </tr>
         </thead>
   
         <!-- Table Body -->
         <tbody style="align-items: center;justify-self: center;">
-          <tr v-for="(c,index) of  courselist.getAllCourses()" :key='index'>
+          <tr v-for="(c,index) of  courselist.getAllCourses()" :key='index' :style="{backgroundColor: c.curTimeSum>=c.totalTime?'red':'lightgreen'}">
             <td style="text-align: center;"> {{ index+1}}  </td>
             <td style="text-align: center;"> {{ c.courseName }}  </td>
             <td style="text-align: center;"> {{ c.totalTime }}  </td>
-            <td>
-              <!-- Modify Button -->
-              <button style="text-align: center;"  @click="editCourse(index)">Modify</button>
-              <!-- Delete Button -->
-            </td>
+            <td style="text-align: center;"> {{ c.curTimeSum}}  </td>
             <td>
                 
               <button @click="deleteCourse(index)">Delete</button>
@@ -47,17 +44,47 @@
         </tbody>
       </table>
     </div>
+
+    
+    <!-- Modal -->
+    <div class="modal" v-if="showModal">
+      <div class="modal-background" @click="closeModal"></div>
+      <div class="modal-content">
+        <div class="box">
+          <h2>Edit Course</h2>
+          <form @submit.prevent="saveChanges">
+            <div class="field">
+              <label class="label">Course Name</label>
+              <div class="control">
+                <input class="input" v-model="editedCourse.courseName" type="text" placeholder="Enter course name">
+              </div>
+            </div>
+
+            <div class="field">
+              <label class="label">Class Time</label>
+              <div class="control">
+                <input class="input" v-model="editedCourse.totalTime" type="text" placeholder="Enter class time">
+              </div>
+            </div>
+
+            <button type="submit" class="button is-primary">Save Changes</button>
+          </form>
+        </div>
+      </div>
+      <button class="modal-close is-large" aria-label="close" @click="closeModal"></button>
+    </div>
+
   </template>
   
   <script setup lang="ts">
   import { reactive, ref } from 'vue';
-  import { Course, CourseLIST, Teacher, Wanbo } from './projectEntity';
+  import { AsignedCourse, Course, CourseLIST, Lab, Teacher, Wanbo, lablist } from './projectEntity';
   
   let courselist = reactive(CourseLIST);
   let userproxy = reactive(Wanbo);
   const newCourse = reactive({ courseId: '', courseName: '', teacherName: '',totalTime:0,curTimeSum:0 });
-  const editMode = ref(false);
-  
+  let  editMode = ref(false);
+  const showModal = ref(false);
   // Add Course Method
   const addCourse = () => {
     editMode.value = true;
@@ -71,19 +98,33 @@
     newCourse.teacherName = '';
   
   };
-  
-  // Edit Course Method
-  const editCourse = (index) => {
-    // Set edit mode to true to display edit form
-    editMode.value = true;
-    courselist.updateCourseInfo(index,newCourse.courseName);
-    CourseLIST.updateCourseInfo(index,newCourse.courseName);
-    // Pre-fill input fields with current course information
-    // newCourse.courseId = courselist[index].courseId;
-    newCourse.courseName = '';
-    newCourse.teacherName = '';
-  };
-  
+  // Import necessary modules
+
+// Define reactive variables
+
+let editedCourse = reactive(new Course(1,'ss',Wanbo,0,0));
+
+// Method to open the modal and populate with current course data
+const editCourse = (index) => {
+  showModal.value = true;
+  // Populate editedCourse with current course data
+  editedCourse=courselist.getAllCourses()[index];
+};
+
+// Method to close the modal
+const closeModal = () => {
+  showModal.value = false;
+};
+
+// Method to save changes made in the modal
+const saveChanges = () => {
+  // Update the course data in the list
+  CourseLIST.getAllCourses()[editedCourse.courseId-1]=editedCourse;
+  // Close the modal
+  closeModal();
+};
+
+
   // Delete Course Method
   const deleteCourse = (index) => {
     // Remove course from the course list based on index
@@ -142,4 +183,38 @@
 .custom-table tbody tr:hover {
   background-color: #ddd;
 }
+ /* Add your modal styles here */
+ .modal {
+      /* Modal styles */
+      display: block; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
+  }
+  .modal-content {
+      background-color: #fefefe;
+      margin: 15% auto; /* 15% from the top and centered */
+      padding: 20px;
+      border: 1px solid #888;
+      width: 80%; /* Could be more or less, depending on screen size */
+  }
+  .close {
+      color: #aaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+  }
+  
+  .close:hover,
+  .close:focus {
+      color: black;
+      text-decoration: none;
+      cursor: pointer;
+  }
+
   </style>

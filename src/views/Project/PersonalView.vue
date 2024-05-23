@@ -42,10 +42,16 @@ const newName = ref('');
 const newTitle = ref('');
 const editMode = ref(false);
 let userproxy=reactive(Wanbo)
-const submitChanges = () => {
+const submitChanges = (event) => {
   // 运行定义的处理函数修改信息
   // 这里只是一个示例，您需要根据具体需求来实现
+  if(newName.value.length<=0||newTitle.value.length<=0)
+  {
+    event.preventDefault();
+  }
   Wanbo.updateTeacherInfo(newName.value,newTitle.value);
+
+  
   // 关闭编辑模式
   editMode.value = false;
 };

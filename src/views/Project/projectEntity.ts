@@ -77,8 +77,13 @@ export class Course {
     updateCourseInfo(courseName: string): void {
         this.courseName = courseName;
     }
+    updateCourseInfos(courseName:string,courseTotalTime:number)
+    {
+        this.courseName=courseName;
+        this.totalTime=courseTotalTime;
+    }
     updateCourseTime(curTimeSum:number):void {
-        this.curTimeSum=curTimeSum;
+        this.curTimeSum+=curTimeSum;
     }
 }
 
@@ -98,7 +103,7 @@ export class AsignedCourse extends Course {
         this.TeachingDay = TeachingDay;
         this.StartTime=startTime;
         this.EndTime=endTime;
-        this.timeSum=(this.EndTime-this.StartTime)*(this.EndWeek-this.StartWeek);
+        this.timeSum=(this.EndTime-this.StartTime+1)*(this.EndWeek-this.StartWeek+1);
     }
 
     // 修改已安排课程信息
@@ -113,18 +118,23 @@ export class AsignedCourse extends Course {
 
 // 示例教师
 export let Wanbo = new Teacher(1, '王波', '讲师');
-const Course1 = new Course(1, 'Web系统框架', Wanbo,16,8);
-const Course2 = new Course(2, 'Java程序设计', Wanbo,12,6);
-const Course3 = new Course(3, 'Web前端开发', Wanbo,24,8);
-const Course4 = new Course(4, '软件体系结构', Wanbo,24,12);
+const Course1 = new Course(1, 'Web系统框架', Wanbo,16,16);
+const Course2 = new Course(2, 'Java程序设计', Wanbo,12,12);
+const Course3 = new Course(3, 'Web前端开发', Wanbo,24,16);
+const Course4 = new Course(4, '软件体系结构', Wanbo,24,24);
 
 // 示例课程
 const asignedCourse1 = new AsignedCourse(Course1, 1, 4, 1, 1, 2);
 const asignedCourse2 = new AsignedCourse(Course2, 1, 3, 2, 1, 2);
 const asignedCourse3 = new AsignedCourse(Course3, 1, 4, 3, 1, 2);
 const asignedCourse4 = new AsignedCourse(Course4, 1, 4, 4, 1, 2);
-const StaticCourseList=[Course1,Course2,Course3,Course4]
-const asignedCourseList: AsignedCourse[] = [asignedCourse1, asignedCourse2, asignedCourse3, asignedCourse4];
+const asignedCourse5 = new AsignedCourse(Course1, 5, 8, 1, 1, 2);
+const asignedCourse6 = new AsignedCourse(Course2, 4, 7, 2, 1, 2);
+const asignedCourse7 = new AsignedCourse(Course3, 5, 8, 3, 1, 2);
+const asignedCourse8= new AsignedCourse(Course4, 5, 8, 4, 1, 2);
+const StaticCourseList=[Course1,Course2,Course3,Course4];
+const asignedCourseList1: AsignedCourse[] = [asignedCourse1, asignedCourse2, asignedCourse3, asignedCourse4];
+const asignedCourseList2: AsignedCourse[] = [asignedCourse5, asignedCourse6, asignedCourse7, asignedCourse8];
 
 export class AsignedCourseList {
     asignedCourses: AsignedCourse[];
@@ -136,9 +146,10 @@ export class AsignedCourseList {
     }
 }
 
-const ACLO = new AsignedCourseList(asignedCourseList);
-const Labx1=new Lab(1,'901',ACLO);
-const Labx2=new Lab(2,'902',ACLO);
+const ACLO1 = new AsignedCourseList(asignedCourseList1);
+const ACLO2 = new AsignedCourseList(asignedCourseList2);
+const Labx1=new Lab(0,'901',ACLO1);
+const Labx2=new Lab(1,'902',ACLO2);
 export let lablist:LabList=new LabList([Labx1,Labx2]);
 // export let MyLabList:LabList=new LabList(lablist);
 // 类“Lab”用于其声明前。ts(2449)
